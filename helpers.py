@@ -18,4 +18,4 @@ def sorry(message):
 
 def updateMessage(message):
     flash(message)
-    return render_template("updateMessage.html")
+    return render_template("message.html")

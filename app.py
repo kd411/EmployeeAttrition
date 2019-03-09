@@ -79,6 +79,8 @@ def update():
 @app.route("/updateDet")
 @login_required
 def updateDet():
+    if not request.values.get("id"):
+        return updateMessage("must enter ID")
     id = request.values.get("id")
     param = request.values.get("parameter")
     paramval = request.values.get("paramvalue")
@@ -87,7 +89,20 @@ def updateDet():
     if int(id) < 0 or int(id) > 29:
         return updateMessage("ID not found")
     db = SQL("sqlite:///dataset.db")
-    db.execute("UPDATE dataset SET "+param+"=:val, JobRole=:j, MaritalStatus=:ms WHERE ID=:i", val=int(paramval), j=job, ms=marstat, i=id)
+    if param=="":
+        if job=="":
+            db.execute("UPDATE dataset SET MaritalStatus=:ms WHERE ID=:i", ms=marstat, i=id)
+        elif marstat=="":
+            db.execute("UPDATE dataset SET JobRole=:j WHERE ID=:i", j=job, i=id)
+        else:
+            db.execute("UPDATE dataset SET  JobRole=:j, MaritalStatus=:ms WHERE ID=:i", j=job, ms=marstat, i=id)
+    else:
+        if job=="":
+            db.execute("UPDATE dataset SET " + param + "=:val, MaritalStatus=:ms WHERE ID=:i", val=int(paramval), ms=marstat, i=id)
+        elif marstat=="":
+            db.execute("UPDATE dataset SET " + param + "=:val, JobRole=:j WHERE ID=:i", val=int(paramval), j=job, i=id)
+        else:
+            db.execute("UPDATE dataset SET " + param + "=:val, JobRole=:j, MaritalStatus=:ms WHERE ID=:i", val=int(paramval), j=job, ms=marstat, i=id)
     return updateMessage("Updated successfully")
 
 

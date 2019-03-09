@@ -1,44 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/style.css" type="text/css">
+    <meta charset="ISO-8859-1">
     <title>Update</title>
 </head>
 <body>
-    <h1>Update Employee Details</h1>
     <form action="/updateDet">
-        <input type="number" name="id" placeholder="Employee ID"><br><br>
-        Select parameter:<br>
-        <select name="parameter">
-            <option value="DistanceFromHome">Distance From Home</option>
-            <option value="JobSatisfaction">Job Satisfaction</option>
-            <option value="MonthlyIncome">Monthly Income</option>
-            <option value="OverTime">Over Time</option>
-            <option value="PercentSalaryHike">Percent Salary Hike</option>
-            <option value="YearsInCurrentRole">Years In Current Role</option>
-            <option value="YearsSinceLastPromotion">Years Since Last Promotion</option>
-        </select>
-        <input type="number" name="paramvalue" placeholder="value"><br><br>
-        Job Role:
-        <select name="JobRole" value="">
-            <option value="Sales Executive">Sales Executive</option>
-            <option value="Research Scientist">Research Scientist</option>
-            <option value="Laboratory Technician">Laboratory Technician</option>
-            <option value="Manufacturing Director">Manufacturing Director</option>
-            <option value="Healthcare Representative">Healthcare Representative</option>
-            <option value="Manager">Manager</option>
-            <option value="Sales Representative">Sales Representative</option>
-            <option value="Research Director">Research Director</option>
-            <option value="Human Resources">Human Resources</option>
-        </select><br><br>
-        Marital Status:
-        <select name="MaritalStatus" value="">
-            <option value="Married">Married</option>
-            <option value="Single">Single</option>
-            <option value="Divorced">Divorced</option>
-        </select><br><br>
-        <button type="Submit">Submit</button>
-        <button type="reset">Clear</button>
+        <div class="login">
+            <div class="login-screen">
+                <div class="app-title">
+                    <h1>Update Employee Details</h1>
+                </div>
+                <div class="login-form">
+                    <div class="control-group">
+                        <input type="number" name="id" placeholder="Employee ID" class="login-field"><br><br>
+                        <label class="login-field-icon fui-user" for="login-name"></label>
+                    </div>
+                    <div class="control-group">
+                        Select parameter:<br><br>
+                        <select name="parameter" value="">
+                            <option value="">None</option>
+                            <option value="DistanceFromHome">Distance From Home</option>
+                            <option value="JobSatisfaction">Job Satisfaction</option>
+                            <option value="MonthlyIncome">Monthly Income</option>
+                            <option value="OverTime">Over Time</option>
+                            <option value="PercentSalaryHike">Percent Salary Hike</option>
+                            <option value="YearsInCurrentRole">Years In Current Role</option>
+                            <option value="YearsSinceLastPromotion">Years Since Last Promotion</option>
+                        </select><br><br>
+                        <input type="number" name="paramvalue" placeholder="value" class="login-field"><br><br>
+                        <label class="login-field-icon fui-user" for="login-name"></label>
+                    </div>
+                    <div class="control-group">
+                        Job Role:
+                        <select name="JobRole" value="">
+                            <option value="">Default</option>
+                            <option value="Sales Executive">Sales Executive</option>
+                            <option value="Research Scientist">Research Scientist</option>
+                            <option value="Laboratory Technician">Laboratory Technician</option>
+                            <option value="Manufacturing Director">Manufacturing Director</option>
+                            <option value="Healthcare Representative">Healthcare Representative</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Sales Representative">Sales Representative</option>
+                            <option value="Research Director">Research Director</option>
+                            <option value="Human Resources">Human Resources</option>
+                        </select><br><br>
+                    </div>
+                    <div class="control-group">
+                        Marital Status:
+                        <select name="MaritalStatus" value="">
+                            <option value="">Default</option>
+                            <option value="Married">Married</option>
+                            <option value="Single">Single</option>
+                            <option value="Divorced">Divorced</option>
+                        </select><br><br>
+                    </div>
+                    <button type="Submit" class="btn btn-primary btn-large btn-block">Submit</button><br>
+                    <button type="reset" class="btn btn-primary btn-large btn-block">Clear</button>
+                </div>
+            </div>
+        </div>
     </form>
 </body>
 </html>
