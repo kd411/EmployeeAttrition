@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Details</title>
+</head>
+<body>
+    <table border="1" cellpadding="1" cellspacing="1">
+        <th>ID</th><th>Attrition</th><th>Age</th><th>BusinessTravel</th><th>Department</th><th>DistanceFromHome</th><th>Education</th><th>EducationField</th><th>Gender</th><th>JobLevel</th><th>JobRole</th><th>JobSatisfaction</th><th>MaritalStatus</th><th>MonthlyIncome</th><th>NumCompaniesWorked</th><th>OverTime</th><th>PercentSalaryHike</th><th>TotalWorkingYears</th><th>YearsAtCompany</th><th>YearsInCurrentRole</th><th>YearsSinceLastPromotion</th><th>YearsWithCurrManager</th><th>EmployeeNumber</th>
+        {% for row in data %}
+            <tr>
+            {% for d in row %}
+                <td>{{ d }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

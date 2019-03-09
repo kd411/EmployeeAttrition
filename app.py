@@ -1,5 +1,6 @@
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session
 from cs50 import SQL
+import sqlite3
 from flask_session import Session
 from tempfile import mkdtemp
 from helpers import login_required, sorry
@@ -62,7 +63,11 @@ def home():
 @app.route("/view")
 @login_required
 def view():
-    return "Employee List"
+    conn = sqlite3.connect("dataset.db")
+    cur = conn.execute("SELECT * FROM dataset")
+    # data = db1.execute("SELECT * FROM dataset")
+    data = cur.fetchall()
+    return render_template("view.html", data=data)
 
 
 @app.route("/update")
