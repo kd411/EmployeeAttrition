@@ -13,7 +13,7 @@ df.to_csv('dataset-complete.csv')
 Var_Corr = df.corr()
 X = df.iloc[:, 1:].values
 y = df.iloc[:, 0].values
-t = df.iloc[3,1:].values
+t = df.iloc[3, 1:].values
 
 labelencoder_X_1 = LabelEncoder()
 X[:, 1] = labelencoder_X_1.fit_transform(X[:, 1])
@@ -56,7 +56,7 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
-clf=RandomForestClassifier(n_estimators=100)
+clf = RandomForestClassifier(n_estimators=100)
 clf.fit(X_train,y_train)
-p=clf.predict(X_test)
+p = clf.predict(X_test)
 print(accuracy_score(y_test,p))
