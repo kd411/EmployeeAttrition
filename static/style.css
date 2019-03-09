@@ -10,22 +10,22 @@ font-family: Arial;
 background-color: #3498DB;
 padding: 50px;
 }
-.bg {
+.login {
 margin: 20px auto;
 width: 300px;
 }
-.screen {
+.login-screen {
 background-color: #FFF;
 padding: 20px;
 border-radius: 5px
 }
 
-.title {
+.app-title {
 text-align: center;
 color: #777;
 }
 
-.form {
+.login-form {
 text-align: center;
 }
 .control-group {
