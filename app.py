@@ -7,7 +7,7 @@ from helpers import login_required, sorry
 app = Flask(__name__)
 
 db = SQL("sqlite:///hr.db")
-# app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 @app.after_request
