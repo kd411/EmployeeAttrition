@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/style.css" type="text/css">
+    <meta charset="ISO-8859-1">
+    <title>Update Message</title>
+</head>
+<body>
+    <div class="login">
+        <div class="login-screen">
+            <div class="app-title">
+                <h1>Message</h1>
+                <div class="flashes">
+                    {% for message in get_flashed_messages()%}
+                        {{ message }}
+                    {% endfor %}
+                </div><br>
+                <form action="/home">
+                    <button type="Submit" class="btn btn-primary btn-large btn-block">Go To Home</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

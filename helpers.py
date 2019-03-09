@@ -14,3 +14,8 @@ def login_required(f):
 def sorry(message):
     flash(message)
     return render_template("sorry.html")
+
+
+def updateMessage(message):
+    flash(message)
+    return render_template("updateMessage.html")

@@ -3,11 +3,11 @@ from cs50 import SQL
 import sqlite3
 from flask_session import Session
 from tempfile import mkdtemp
-from helpers import login_required, sorry
+from helpers import login_required, sorry, updateMessage
 
 app = Flask(__name__)
 
-db = SQL("sqlite:///hr.db")
+
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
@@ -33,6 +33,7 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    db = SQL("sqlite:///hr.db")
     session.clear()
     if request.method == "POST":
         if not request.form.get("username"):
@@ -65,7 +66,6 @@ def home():
 def view():
     conn = sqlite3.connect("dataset.db")
     cur = conn.execute("SELECT * FROM dataset")
-    # data = db1.execute("SELECT * FROM dataset")
     data = cur.fetchall()
     return render_template("view.html", data=data)
 
@@ -73,7 +73,22 @@ def view():
 @app.route("/update")
 @login_required
 def update():
-    return "Update Employee Details"
+    return render_template("update.html")
+
+
+@app.route("/updateDet")
+@login_required
+def updateDet():
+    id = request.values.get("id")
+    param = request.values.get("parameter")
+    paramval = request.values.get("paramvalue")
+    job = request.values.get("JobRole")
+    marstat = request.values.get("MaritalStatus")
+    if int(id) < 0 or int(id) > 29:
+        return updateMessage("ID not found")
+    db = SQL("sqlite:///dataset.db")
+    db.execute("UPDATE dataset SET "+param+"=:val, JobRole=:j, MaritalStatus=:ms WHERE ID=:i", val=int(paramval), j=job, ms=marstat, i=id)
+    return updateMessage("Updated successfully")
 
 
 @app.route("/attrition")

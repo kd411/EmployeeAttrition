@@ -60,4 +60,3 @@ clf=RandomForestClassifier(n_estimators=100)
 clf.fit(X_train,y_train)
 p=clf.predict(X_test)
 print(accuracy_score(y_test,p))
-

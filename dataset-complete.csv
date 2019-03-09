@@ -1,4 +1,4 @@
-ID,Attrition,Age,BusinessTravel,Department,DistanceFromHome,Education,EducationField,Gender,JobRole,JobSatisfaction,MaritalStatus,MonthlyIncome,NumCompaniesWorked,OverTime,PercentSalaryHike,YearsInCurrentRole,YearsSinceLastPromotion
+,Attrition,Age,BusinessTravel,Department,DistanceFromHome,Education,EducationField,Gender,JobRole,JobSatisfaction,MaritalStatus,MonthlyIncome,NumCompaniesWorked,OverTime,PercentSalaryHike,YearsInCurrentRole,YearsSinceLastPromotion
 0,Yes,41,Travel_Rarely,Sales,1,2,Life Sciences,Female,Sales Executive,4,Single,5993,8,Yes,11,4,0
 1,No,49,Travel_Frequently,Research & Development,8,1,Life Sciences,Male,Research Scientist,2,Married,5130,1,No,23,7,1
 2,Yes,37,Travel_Rarely,Research & Development,2,2,Other,Male,Laboratory Technician,3,Single,2090,6,Yes,15,0,0

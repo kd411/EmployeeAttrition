@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+</head>
+<body>
+    <h1>Update Employee Details</h1>
+    <form action="/updateDet">
+        <input type="number" name="id" placeholder="Employee ID"><br><br>
+        Select parameter:<br>
+        <select name="parameter">
+            <option value="DistanceFromHome">Distance From Home</option>
+            <option value="JobSatisfaction">Job Satisfaction</option>
+            <option value="MonthlyIncome">Monthly Income</option>
+            <option value="OverTime">Over Time</option>
+            <option value="PercentSalaryHike">Percent Salary Hike</option>
+            <option value="YearsInCurrentRole">Years In Current Role</option>
+            <option value="YearsSinceLastPromotion">Years Since Last Promotion</option>
+        </select>
+        <input type="number" name="paramvalue" placeholder="value"><br><br>
+        Job Role:
+        <select name="JobRole" value="">
+            <option value="Sales Executive">Sales Executive</option>
+            <option value="Research Scientist">Research Scientist</option>
+            <option value="Laboratory Technician">Laboratory Technician</option>
+            <option value="Manufacturing Director">Manufacturing Director</option>
+            <option value="Healthcare Representative">Healthcare Representative</option>
+            <option value="Manager">Manager</option>
+            <option value="Sales Representative">Sales Representative</option>
+            <option value="Research Director">Research Director</option>
+            <option value="Human Resources">Human Resources</option>
+        </select><br><br>
+        Marital Status:
+        <select name="MaritalStatus" value="">
+            <option value="Married">Married</option>
+            <option value="Single">Single</option>
+            <option value="Divorced">Divorced</option>
+        </select><br><br>
+        <button type="Submit">Submit</button>
+        <button type="reset">Clear</button>
+    </form>
+</body>
+</html>
