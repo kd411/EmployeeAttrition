@@ -1,62 +1,148 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+from flask import flash
+import numpy as np
 
-df = pd.read_csv('original_dataset.csv')
-df = df.drop(['DailyRate', 'EmployeeCount', 'YearsAtCompany', 'TotalWorkingYears', 'JobLevel', 'HourlyRate', 'MonthlyRate', 'Over18', 'StandardHours', 'EnvironmentSatisfaction', 'JobInvolvement', 'PerformanceRating', 'TrainingTimesLastYear', 'RelationshipSatisfaction', 'StockOptionLevel', 'WorkLifeBalance', 'YearsWithCurrManager'], axis=1)
-df = df[['Attrition', 'Age', 'BusinessTravel', 'Department', 'DistanceFromHome', 'Education', 'EducationField', 'Gender', 'JobRole', 'JobSatisfaction', 'MaritalStatus', 'MonthlyIncome', 'NumCompaniesWorked', 'OverTime', 'PercentSalaryHike', 'YearsInCurrentRole', 'YearsSinceLastPromotion']]
-df.to_csv('dataset-complete.csv')
 
-Var_Corr = df.corr()
-X = df.iloc[:, 1:].values
-y = df.iloc[:, 0].values
-t = df.iloc[3, 1:].values
+def check(test, clf):
+    X = [list(elem) for elem in test]
+    [r.pop(0) for r in X]
+    X = np.array(X)
+    labelencoder_X_1 = LabelEncoder()
+    X[:, 1] = labelencoder_X_1.fit_transform(X[:, 1])
+    labelencoder_X_2 = LabelEncoder()
+    X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])
+    labelencoder_X_5 = LabelEncoder()
+    X[:, 5] = labelencoder_X_5.fit_transform(X[:, 5])
+    labelencoder_X_6 = LabelEncoder()
+    X[:, 6] = labelencoder_X_6.fit_transform(X[:, 6])
+    labelencoder_X_7 = LabelEncoder()
+    X[:, 7] = labelencoder_X_7.fit_transform(X[:, 7])
+    labelencoder_X_9 = LabelEncoder()
+    X[:, 9] = labelencoder_X_9.fit_transform(X[:, 9])
+    labelencoder_X_12 = LabelEncoder()
+    X[:, 12] = labelencoder_X_12.fit_transform(X[:, 12])
+    p = clf.predict(X)
+    t = ()
+    for x in p:
+        if x == 0:
+            a = 'No'
+        else:
+            a = 'Yes'
+        t = t+(a,)
+    return t
 
-labelencoder_X_1 = LabelEncoder()
-X[:, 1] = labelencoder_X_1.fit_transform(X[:, 1])
-labelencoder_X_2 = LabelEncoder()
-X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])
-labelencoder_X_5 = LabelEncoder()
-X[:, 5] = labelencoder_X_5.fit_transform(X[:, 5])
-labelencoder_X_6 = LabelEncoder()
-X[:, 6] = labelencoder_X_6.fit_transform(X[:, 6])
-labelencoder_X_7 = LabelEncoder()
-X[:, 7] = labelencoder_X_7.fit_transform(X[:, 7])
-labelencoder_X_9 = LabelEncoder()
-X[:, 9] = labelencoder_X_9.fit_transform(X[:, 9])
-labelencoder_X_12 = LabelEncoder()
-X[:, 12] = labelencoder_X_12.fit_transform(X[:, 12])
 
-X = X.astype(float)
-labelencoder_y = LabelEncoder()
-y = labelencoder_y.fit_transform(y)
+def analyze(df, clf):
+    feature_importances = pd.DataFrame(clf.feature_importances_,index=['Age', 'BusinessTravel', 'Department', 'DistanceFromHome', 'Education', 'EducationField', 'Gender', 'JobRole', 'JobSatisfaction', 'MaritalStatus', 'MonthlyIncome', 'NumCompaniesWorked', 'OverTime', 'PercentSalaryHike', 'YearsInCurrentRole', 'YearsSinceLastPromotion'],columns=['importance']).sort_values('importance',ascending=False)
+    feature_importances['x1'] = feature_importances.index
+    ax = feature_importances.plot.bar(x='x1', y='importance', rot=90)
+    plt.savefig('templates/graphs/feature_importances.png')
 
-onehotencoder1 = OneHotEncoder(categorical_features = [1])
-X = onehotencoder1.fit_transform(X).toarray()
-X = X[:, 1:]
-onehotencoder2 = OneHotEncoder(categorical_features = [3])
-X = onehotencoder2.fit_transform(X).toarray()
-X = X[:, 1:]
-onehotencoder5 = OneHotEncoder(categorical_features = [5])
-X = onehotencoder5.fit_transform(X).toarray()
-X = X[:, 1:]
-onehotencoder7 = OneHotEncoder(categorical_features = [11])
-X = onehotencoder7.fit_transform(X).toarray()
-X = X[:, 1:]
-onehotencoder9 = OneHotEncoder(categorical_features = [19])
-X = onehotencoder9.fit_transform(X).toarray()
-X = X[:, 1:]
+    intervals = [x for x in range(0,22000,2000)]
+    categories = ['<'+str(x) for x in range(2000,22000,2000)]
+    df1 = df
+    df1['Income_Categories'] = pd.cut(df.MonthlyIncome, intervals, labels=categories)
+    ax = sns.countplot(x="Income_Categories", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Monthly Income vs Attrition", xlabel="Income group", ylabel="Total")
+    plt.xticks(rotation=-45)
+    plt.savefig('templates/graphs/MIvsAttr.png')
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.40)
+    intervals = [x for x in range(18,63,3)]
+    categories = ['<'+str(x) for x in range(21,63,3)]
+    df1 = df
+    df1['Age_Categories'] = pd.cut(df.Age, intervals, labels=categories)
+    ax = sns.countplot(x="Age_Categories", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Age vs Attrition", xlabel="Age group", ylabel="Total")
+    plt.xticks(rotation=-45)
+    plt.savefig('templates/graphs/AgevsAttr.png')
 
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
+    intervals = [x for x in range(0,32,2)]
+    categories = ['<'+str(x) for x in range(2,32,2)]
+    df1 = df
+    df1['Distance_from_home'] = pd.cut(df.DistanceFromHome, intervals, labels=categories)
+    ax = sns.countplot(x="Distance_from_home", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Distance from home vs Attrition", xlabel="Distance", ylabel="Total")
+    plt.xticks(rotation=-45)
+    plt.savefig('templates/graphs/DistanceFromHomevsAttr.png')
 
-clf = RandomForestClassifier(n_estimators=100)
-clf.fit(X_train,y_train)
-p = clf.predict(X_test)
-print(accuracy_score(y_test,p))
+    ax = sns.countplot(x="PercentSalaryHike", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Salary Hike Percentage vs Attrition", xlabel="Salary Hike Percentage", ylabel="Total")
+    plt.savefig('templates/graphs/PercentSalaryHikevsAttr.png')
+
+    ax = sns.countplot(x="NumCompaniesWorked", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Number Of Previously Worked Companies vs Attrition", xlabel="Number Of Previously Worked Companies", ylabel="Total")
+    plt.savefig('templates/graphs/NPWCvsAttr.png')
+
+    intervals = [x for x in range(0,22,2)]
+    categories = ['<'+str(x) for x in range(2,22,2)]
+    df1 = df
+    df1['Current_Role'] = pd.cut(df.YearsInCurrentRole, intervals, labels=categories)
+    ax = sns.countplot(x="Current_Role", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Number Of Years in Current Role vs Attrition", xlabel="Number Of Years in Current Role", ylabel="Total")
+    plt.xticks(rotation=-45)
+    plt.savefig('templates/graphs/YICRvsAttr.png')
+
+    ax = sns.countplot(x="OverTime", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Over Time vs Attrition", xlabel="Over Time", ylabel="Total")
+    plt.savefig('templates/graphs/OverTimevsAttr.png')
+
+    ax = sns.countplot(x="JobRole", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Job Role vs Attrition", xlabel="Job Role", ylabel="Total")
+    plt.xticks(rotation=90)
+    plt.savefig('templates/graphs/JobRolevsAttr.png')
+
+    intervals = [x for x in range(0,18,2)]
+    categories = ['<'+str(x) for x in range(2,18,2)]
+    df1 = df
+    df1['Promotion'] = pd.cut(df.YearsSinceLastPromotion, intervals, labels=categories)
+    ax = sns.countplot(x="Promotion", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Number of Years since Promotion vs Attrition", xlabel="Number of Years since Promotion", ylabel="Total")
+    plt.xticks(rotation=-45)
+    plt.savefig('templates/graphs/YSCPvsAttr.png')
+
+    ax = sns.countplot(x="MaritalStatus", hue="Attrition", palette="Set1", data=df1)
+    ax.set(title="Marital Status vs Attrition", xlabel="Marital Status", ylabel="Total")
+    plt.savefig('templates/graphs/MSvsAttr.png')
+
+
+def run(data):
+    df = pd.read_csv('original_dataset.csv')
+    df = df.drop(['DailyRate', 'EmployeeCount', 'YearsAtCompany', 'TotalWorkingYears', 'JobLevel', 'HourlyRate', 'MonthlyRate', 'Over18', 'StandardHours', 'EnvironmentSatisfaction', 'JobInvolvement', 'PerformanceRating', 'TrainingTimesLastYear', 'RelationshipSatisfaction', 'StockOptionLevel', 'WorkLifeBalance', 'YearsWithCurrManager'], axis=1)
+    df = df[['Attrition', 'Age', 'BusinessTravel', 'Department', 'DistanceFromHome', 'Education', 'EducationField', 'Gender', 'JobRole', 'JobSatisfaction', 'MaritalStatus', 'MonthlyIncome', 'NumCompaniesWorked', 'OverTime', 'PercentSalaryHike', 'YearsInCurrentRole', 'YearsSinceLastPromotion']]
+    X = df.iloc[:, 1:].values
+    y = df.iloc[:, 0].values
+
+    labelencoder_X_1 = LabelEncoder()
+    X[:, 1] = labelencoder_X_1.fit_transform(X[:, 1])
+    labelencoder_X_2 = LabelEncoder()
+    X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])
+    labelencoder_X_5 = LabelEncoder()
+    X[:, 5] = labelencoder_X_5.fit_transform(X[:, 5])
+    labelencoder_X_6 = LabelEncoder()
+    X[:, 6] = labelencoder_X_6.fit_transform(X[:, 6])
+    labelencoder_X_7 = LabelEncoder()
+    X[:, 7] = labelencoder_X_7.fit_transform(X[:, 7])
+    labelencoder_X_9 = LabelEncoder()
+    X[:, 9] = labelencoder_X_9.fit_transform(X[:, 9])
+    labelencoder_X_12 = LabelEncoder()
+    X[:, 12] = labelencoder_X_12.fit_transform(X[:, 12])
+
+    X = X.astype(float)
+    labelencoder_y = LabelEncoder()
+    y = labelencoder_y.fit_transform(y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.40,random_state=0)
+
+    clf = RandomForestClassifier(n_estimators=200)
+    clf.fit(X_train,y_train)
+    p = clf.predict(X_test)
+    acc = accuracy_score(y_test,p)*100
+    flash(acc)
+    att = check(data, clf)
+    analyze(df, clf)
+    return att

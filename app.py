@@ -4,6 +4,7 @@ import sqlite3
 from flask_session import Session
 from tempfile import mkdtemp
 from helpers import login_required, sorry, updateMessage
+from machine import run
 
 app = Flask(__name__)
 
@@ -91,23 +92,42 @@ def updateDet():
     db = SQL("sqlite:///dataset.db")
     if param == "":
         if job == "":
-            db.execute("UPDATE dataset SET MaritalStatus=:ms WHERE ID=:i", ms=marstat, i=id)
+            db.execute("UPDATE dataset SET MaritalStatus=:ms WHERE ID=:i", ms=marstat, i=int(id))
         elif marstat == "":
-            db.execute("UPDATE dataset SET JobRole=:j WHERE ID=:i", j=job, i=id)
+            db.execute("UPDATE dataset SET JobRole=:j WHERE ID=:i", j=job, i=int(id))
         else:
-            db.execute("UPDATE dataset SET  JobRole=:j, MaritalStatus=:ms WHERE ID=:i", j=job, ms=marstat, i=id)
+            db.execute("UPDATE dataset SET  JobRole=:j, MaritalStatus=:ms WHERE ID=:i", j=job, ms=marstat, i=int(id))
     else:
-        if job == "":
-            db.execute("UPDATE dataset SET " + param + "=:val, MaritalStatus=:ms WHERE ID=:i", val=int(paramval), ms=marstat, i=id)
+        if job == "" and marstat == "":
+            db.execute("UPDATE dataset SET " + param + "=:val WHERE ID=:i", val=int(paramval), i=int(id))
+        elif job == "":
+            db.execute("UPDATE dataset SET " + param + "=:val, MaritalStatus=:ms WHERE ID=:i", val=int(paramval), ms=marstat, i=int(id))
         elif marstat == "":
             db.execute("UPDATE dataset SET " + param + "=:val, JobRole=:j WHERE ID=:i", val=int(paramval), j=job, i=id)
         else:
-            db.execute("UPDATE dataset SET " + param + "=:val, JobRole=:j, MaritalStatus=:ms WHERE ID=:i", val=int(paramval), j=job, ms=marstat, i=id)
+            db.execute("UPDATE dataset SET " + param + "=:val, JobRole=:j, MaritalStatus=:ms WHERE ID=:i", val=int(paramval), j=job, ms=marstat, i=int(id))
     return updateMessage("Updated successfully")
 
 
 @app.route("/attrition")
 @login_required
 def attrition():
-    return "Employee Attrition List"
+    conn = sqlite3.connect("dataset.db")
+    cur = conn.execute("SELECT * FROM dataset")
+    data = cur.fetchall()
+    att = run(data)
+    newdata = []
+    i=0
+    for row in att:
+        t = ()
+        t = t + (i,)
+        t = t + (row,)
+        i = i+1
+        newdata.append(t)
+    return render_template("attrition.html", data=newdata)
 
+
+@app.route("/model")
+@login_required
+def model():
+    return render_template("model.html")

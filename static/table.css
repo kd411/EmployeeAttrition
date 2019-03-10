@@ -16,17 +16,37 @@ border-radius: 3px;
 box-shadow: none;
 transition: 0.25s;
 display: block;
-width: 250px;
+width: 150px;
 margin: 0 auto;
 text-align: center;
 position: absolute;
-top: 3%;
-right: 2%;
+top: 10px;
+right: 10px;
+}
+.btn1 {
+border: 2px solid transparent;
+background: #ffffff;
+color: #3498DB;
+font-size: 16px;
+line-height: 25px;
+padding: 10px 0;
+text-decoration: none;
+text-shadow: none;
+border-radius: 3px;
+box-shadow: none;
+transition: 0.25s;
+display: block;
+width: 150px;
+margin: 0 auto;
+text-align: center;
+position: absolute;
+top: 70px;
+right: 10px;
 }
 table.blueTable {
   border: 1px solid #1C6EA4;
   background-color: #EEEEEE;
-  width: 100%;
+  width: 30%;
   text-align: left;
   border-collapse: collapse;
 }
