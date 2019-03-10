@@ -116,15 +116,15 @@ def attrition():
     cur = conn.execute("SELECT * FROM dataset")
     data = cur.fetchall()
     att = run(data)
-    newdata = []
+    newd = []
     i=0
     for row in att:
         t = ()
         t = t + (i,)
         t = t + (row,)
         i = i+1
-        newdata.append(t)
-    return render_template("attrition.html", data=newdata)
+        newd.append(t)
+    return render_template("attrition.html", data=newd)
 
 
 @app.route("/graph")
