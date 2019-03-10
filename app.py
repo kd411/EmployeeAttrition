@@ -127,7 +127,7 @@ def attrition():
     return render_template("attrition.html", data=newdata)
 
 
-@app.route("/model")
+@app.route("/graph")
 @login_required
-def model():
-    return render_template("model.html")
+def graph():
+    return render_template("graph.html")
